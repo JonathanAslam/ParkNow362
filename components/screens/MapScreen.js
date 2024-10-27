@@ -39,7 +39,7 @@ const MapScreen = ({navigation}) => {
                       setRange(range)
                     }}
                     /> 
-                  <Text>Current value: {range}</Text>
+                  <Text>Searching {range} mile radius</Text> 
                 </View>
                 {/* Toggle button for paid unpaid parking */}
                 <Text style={styles.settingTitles}>Paid or Free:</Text>
@@ -55,8 +55,11 @@ const MapScreen = ({navigation}) => {
                     value={paid} // bool value set to true or false
                   />
                   {/* displays if user is searching for paid or free parking. syntax for {} statement: if (paid == true) display 'paid' else display 'free'  */}
-                  <Text>Searching for {paid ? <Text>paid</Text> : <Text>free</Text>} parking</Text> 
+                  <Text>Searching {paid ? <Text>both free and paid</Text> : <Text>for free</Text>} parking</Text> 
                 </View>
+
+
+                {/* cancel button */}
                 
                 <AntDesign name="downcircle" size={24} color="black" onPress={() => setModalVisible(false)} style={styles.modalDownButton} /> 
             </View>
