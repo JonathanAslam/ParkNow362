@@ -15,6 +15,8 @@ const MapScreen = ({navigation}) => {
   const [paid, setPaid] = useState(false); //set paid parking originally to false, toggle true based off switch in modal
   const toggleSwitch = () => setPaid(previousState => !previousState); //toggle switch function made to toggle paid filter on and off
 
+
+
   return (
     <View style={styles.mapContainer}>
         <Text>Hello, this is the Map Navigation page!</Text>       
@@ -30,7 +32,7 @@ const MapScreen = ({navigation}) => {
                   <Slider
                     style={styles.slider}
                     minimumValue={1}
-                    maximumValue={5}
+                    maximumValue={6}
                     step={1} //each increment in slider is 1 unit (miles)
                     minimumTrackTintColor="#5800BB"
                     maximumTrackTintColor="#000000"
@@ -39,7 +41,7 @@ const MapScreen = ({navigation}) => {
                       setRange(range)
                     }}
                     /> 
-                  <Text>Searching {range} mile radius</Text> 
+                  <Text>Searching {range} km ({(range / 1.609).toFixed(4)} mile) radius</Text> 
                 </View>
                 {/* Toggle button for paid unpaid parking */}
                 <Text style={styles.settingTitles}>Paid or Free:</Text>
