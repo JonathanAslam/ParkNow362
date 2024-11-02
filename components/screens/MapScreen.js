@@ -1,9 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Switch, View, Text, StyleSheet, Modal, Dimensions, Pressable, useWindowDimensions, registerCallableModule, } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign'; //icon image that will allow modal popup to appear and disappear
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { Card } from 'react-native-paper';
 import Slider from '@react-native-community/slider'; //slider feature for range
+import MapView from 'react-native-maps';
+import * as Location from 'expo-location';
+import StartSearch from '../buttons/SearchButton';
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -15,14 +18,33 @@ const MapScreen = ({navigation}) => {
   const [paid, setPaid] = useState(false); //set paid parking originally to false, toggle true based off switch in modal
   const toggleSwitch = () => setPaid(previousState => !previousState); //toggle switch function made to toggle paid filter on and off
 
+  //get user location for starting point of map
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
+  // from expo documentation: https://docs.expo.dev/versions/latest/sdk/location/
+  useEffect(() => {
+    (async () => {
+      
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High});
+      setLocation(location);
+    })();
+  }, []);
 
   return (
     <View style={styles.mapContainer}>
-        <Text>Hello, this is the Map Navigation page!</Text>       
-       {/* create modal functionality here */}
-
-       {/* need modal to be transparent in order to see map in background, TYPE transparent IN THE MODAL TAG TO REMOVE BACKGROUND, BE AWARE THAT THE BACKGROUND STILL EXITS WHICH BLOCKS THE BACKGROUND AND STUFF FROM BEING INTERACTED WITH */} 
+      {/* map display here */}
+       <MapView style={styles.map} 
+        initialRegion={location}
+       />
+      {/* create modal functionality here */}
+      {/* need modal to be transparent in order to see map in background, TYPE transparent IN THE MODAL TAG TO REMOVE BACKGROUND, BE AWARE THAT THE BACKGROUND STILL EXITS WHICH BLOCKS THE BACKGROUND AND STUFF FROM BEING INTERACTED WITH */} 
        <Modal visible={modalVisible} transparent animationType='slide'> 
           <Card style={styles.cardStyle}>
             <View>
@@ -32,7 +54,7 @@ const MapScreen = ({navigation}) => {
                   <Slider
                     style={styles.slider}
                     minimumValue={1}
-                    maximumValue={6}
+                    maximumValue={5}
                     step={1} //each increment in slider is 1 unit (miles)
                     minimumTrackTintColor="#5800BB"
                     maximumTrackTintColor="#000000"
@@ -41,7 +63,7 @@ const MapScreen = ({navigation}) => {
                       setRange(range)
                     }}
                     /> 
-                  <Text>Searching {range} km ({(range / 1.609).toFixed(4)} mile) radius</Text> 
+                  <Text>Searching {range} mi ({(range * 1.609).toFixed(4)} km) distance</Text> 
                 </View>
                 {/* Toggle button for paid unpaid parking */}
                 <Text style={styles.settingTitles}>Paid or Free:</Text>
@@ -60,9 +82,8 @@ const MapScreen = ({navigation}) => {
                   <Text>Searching {paid ? <Text>both free and paid</Text> : <Text>for free</Text>} parking</Text> 
                 </View>
 
-
-                {/* cancel button */}
-                
+                {/* Search button */}
+                <StartSearch/>
                 <AntDesign name="downcircle" size={24} color="black" onPress={() => setModalVisible(false)} style={styles.modalDownButton} /> 
             </View>
           </Card>
@@ -81,9 +102,14 @@ const { width, height } = Dimensions.get("window");
 // flex: 1 --> allows items to wrap properly 
 
 const styles = StyleSheet.create({
+  map: {
+    width: '100%',
+    height: '100%',
+  },
   mapContainer: {
     height: windowHeight * 0.8,
     width: windowWidth,
+    flex: 1,
   },
   cardStyle: {
     position: 'relative',
@@ -94,7 +120,7 @@ const styles = StyleSheet.create({
   modalUpButton: {
     position: 'relative',
     left: windowWidth* 0.9,
-    top: windowHeight * 0.8, // for some reason, window's height naturally goes out of bounds by a bit
+    top: '-10%', // for some reason, window's height naturally goes out of bounds by a bit
   },
   modalDownButton: {
     position: 'absolute',
