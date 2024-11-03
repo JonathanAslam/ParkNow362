@@ -23,23 +23,37 @@ const MapScreen = ({navigation}) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   // from expo documentation: https://docs.expo.dev/versions/latest/sdk/location/
-  useEffect(() => {
-    (async () => {
-      
-      const { status } = await Location.requestForegroundPermissionsAsync();
+  const userLocation = async() => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
-      }
+      }   
+      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest});
+      // set the location that we just got approved for by the user to the location state variable and update below in the map call where region={location}
+      //returns san francisco location ONLY ON LAPTOP SIMULATOR. ON PHONE, RETURNS CORRECT LOCATION
+      setLocation({ 
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+  }
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
 
-      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High});
-      setLocation(location);
-    })();
-  }, []);
+  useEffect(() => {
+    userLocation();
+  } , []);
 
   return (
     <View style={styles.mapContainer}>
       {/* map display here */}
+      <Text>{text}</Text>
        <MapView style={styles.map} 
         initialRegion={location}
        />
