@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
 
-const StartSearch = () => {
+const StartSearch = ({onPress}) => {
 
   return (
     <View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={Children}>
-            <Text style={styles.buttonText}>Search</Text>
+        <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
+            <Text style={styles.buttonText}>tempbutton(newlocation)</Text>
         </TouchableOpacity>    
     </View>
   )

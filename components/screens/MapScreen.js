@@ -50,12 +50,23 @@ const MapScreen = ({navigation}) => {
     userLocation();
   } , []);
 
+
+  const newLocation = () => {
+    setLocation({
+    longitude: -140.08635,
+    latitude: 60.86168,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  };
+
   return (
     <View style={styles.mapContainer}>
+      {/* text to show current location (longitude, latitude, longitude delta and latitude delta) at top of screen, remove when app works fully */}
+      <Text>{text}</Text> 
       {/* map display here */}
-      <Text>{text}</Text>
        <MapView style={styles.map} 
-        initialRegion={location}
+        region={location}
        />
       {/* create modal functionality here */}
       {/* need modal to be transparent in order to see map in background, TYPE transparent IN THE MODAL TAG TO REMOVE BACKGROUND, BE AWARE THAT THE BACKGROUND STILL EXITS WHICH BLOCKS THE BACKGROUND AND STUFF FROM BEING INTERACTED WITH */} 
@@ -97,7 +108,7 @@ const MapScreen = ({navigation}) => {
                 </View>
 
                 {/* Search button */}
-                <StartSearch/>
+                <StartSearch onPress={() => newLocation()}/>
                 <AntDesign name="downcircle" size={24} color="black" onPress={() => setModalVisible(false)} style={styles.modalDownButton} /> 
             </View>
           </Card>
