@@ -7,23 +7,68 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { Card } from 'react-native-paper';
 
-
 const CreateAccountScreen = () => {
-
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  
+  const [fname, setFname] = useState("j");
+  const [lname, setLname] = useState("a");
+  const [email, setEmail] = useState("ja@gmail.com");
+  const [password, setPassword] = useState("12345678");
 
 
   const navigation = useNavigation();
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     // Implement your login logic here
     console.log('First name:', fname);
     console.log('Last name:', lname);
     console.log('Email:', email);
     console.log('Password:', password);   //add console log for user first and last name
     navigation.navigate('Map'); //route to map page when account is created
+    
+  // rudy test stuff
+  //our logic handling portion starts here aka try block
+  try{
+    //we are using the fetch API to make a POST request to the server
+    //the await keyword pauses the function until fetch is complete
+    const info = await fetch('http://localhost:8081/create-account', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:  JSON.stringify({ fname, lname, email, password}),
+  });
+  if (!info.ok) {
+    throw new Error(`HTTP error! status: ${info.status}`);
+  };
+
+  //the response from the completed fetch request is now converted to JSON format
+  //if its unsuccessful, the catch block is executed
+  // const data = await info.json();
+  const data = await info.json();
+
+  //the if statements check if the response was successful or not
+  if(info.ok){// successful it logs the success message, shows an alert and navigates to the Map screen
+    console.log('Account created successfully:', data);
+    // Alert.alert('Success', 'Account created successfully');
+    navigation.navigate('Map');
+
+  }else {
+    console.error('Error creating account1:', data.error);
+    // Alert.alert('Error', data.message);
+  }
+  
+  //Network issues are caught, issures with parsing the JSON response, etc
+  } catch (err) {
+    console.error('Error creating account:', err);
+  // Handle error more specifically based on error type
+  if (err instanceof TypeError) {
+    console.error('Network error or JSON parsing error:', err);
+  } else {
+    console.error('Generic error:', err);
+  }
+  // Display user-friendly error message to the user
+    // console.error('Error creating account2:', err); //error happening here
+    // Alert.alert('Error', 'An error occurred while creating the account');  //Alert property does not exist
+  }
   };
 
   return (
@@ -40,6 +85,7 @@ const CreateAccountScreen = () => {
           onChangeText={setFname}
           keyboardType="default"
           autoCapitalize="words" // auto capitalize word since its a name
+          autoCorrect={false}
         />
         <TextInput
           style={styles.input}
@@ -47,7 +93,8 @@ const CreateAccountScreen = () => {
           value={lname}
           onChangeText={setLname}
           keyboardType="default"
-          autoCapitalize="none" // auto capitalize word since its a name
+          autoCapitalize="words" // auto capitalize word since its a name
+          autoCorrect={false}
         />        
         <TextInput
           style={styles.input}
@@ -65,8 +112,12 @@ const CreateAccountScreen = () => {
           secureTextEntry
         />
         <Button title="Create Your Account!" onPress={handleCreateAccount}  />
+        <Text>{JSON.stringify({fname, lname, email, password})}</Text>
       </Card>
     </View>
+
+
+    
     // </ParallaxScrollView>
   );
 };

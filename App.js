@@ -18,7 +18,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Map" component={MapScreen}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
-        <Stack.Screen name="CreateAccount" component={CreateAccountScreen}/>
+        <Stack.Screen name="Create Account" component={CreateAccountScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

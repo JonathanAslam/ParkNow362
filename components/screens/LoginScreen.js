@@ -10,12 +10,38 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Implement your login logic here
     console.log('Email:', email);
     console.log('Password:', password);
+    
+    try {
+      const response = await fetch('http://localhost:8081/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();   
+        
+        // Store the token or session ID
+        navigation.navigate('Map');
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred. Please try again.');
+    }
+    
     navigation.navigate('Map'); //when login is complete, navigate to the map page
   };
+  
+
+
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
@@ -36,7 +62,7 @@ const LoginScreen = () => {
           secureTextEntry
         />
         <Button title="Login" onPress={handleLogin}  />
-        <Button title="CreateAccount" onPress={() => navigation.navigate("CreateAccount")}/>
+        <Button title="CreateAccount" onPress={() => navigation.navigate("Create Account")}/>
       </Card>
     </View>
   )
