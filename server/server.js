@@ -33,13 +33,13 @@ app.use(bodyParser.json());
 app.post('/create-account', async (req, res) => {
 const { fname, lname, email, password } = req.body;
 //encrypt user password:
-const newPassword = await bcrypt.hash(req.body.password, 15)
+// const newPassword = await bcrypt.hash(req.body.password, 15)
 try {
   const user = await User.create({
     fname: req.body.fname,
     lname: req.body.lname,
     email: req.body.email,
-    password: newPassword,
+    password: req.body.password,
   })
   res.status(200).send("User regstered to database")
   console.log('user registered to database')

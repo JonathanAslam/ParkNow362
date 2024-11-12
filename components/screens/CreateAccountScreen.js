@@ -34,7 +34,7 @@ const CreateAccountScreen = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body:  JSON.stringify({ fname, lname, email, password}),
+      body:  JSON.stringify({fname, lname, email, password}),
   });
   if (!info.ok) {
     throw new Error(`HTTP error! status: ${info.status}`);
@@ -66,7 +66,7 @@ const CreateAccountScreen = () => {
     console.error('Generic error:', err);
   }
   // Display user-friendly error message to the user
-    // console.error('Error creating account2:', err); //error happening here
+    console.error('Error creating account2:', err); //error happening here
     // Alert.alert('Error', 'An error occurred while creating the account');  //Alert property does not exist
   }
   };
@@ -112,7 +112,7 @@ const CreateAccountScreen = () => {
           secureTextEntry
         />
         <Button title="Create Your Account!" onPress={handleCreateAccount}  />
-        <Text>{JSON.stringify({fname, lname, email, password})}</Text>
+        <Text>{JSON.stringify({first_name: fname, last_name: lname, email: email, password: password})}</Text>
       </Card>
     </View>
 
