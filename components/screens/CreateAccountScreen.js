@@ -9,10 +9,10 @@ import { Card } from 'react-native-paper';
 
 const CreateAccountScreen = () => {
   
-  const [fname, setFname] = useState("j");
-  const [lname, setLname] = useState("a");
-  const [email, setEmail] = useState("ja@gmail.com");
-  const [password, setPassword] = useState("12345678");
+  const [fname, setFname] = useState("jacob");
+  const [lname, setLname] = useState("smith");
+  const [email, setEmail] = useState("JacobS@gmail.com");
+  const [password, setPassword] = useState("hello");
 
 
   const navigation = useNavigation();
@@ -40,10 +40,18 @@ const CreateAccountScreen = () => {
     throw new Error(`HTTP error! status: ${info.status}`);
   };
 
-  //the response from the completed fetch request is now converted to JSON format
-  //if its unsuccessful, the catch block is executed
+  //the response from the completed fetch request is now converted to JSON format but we should check to make sure its in JSON format before doing anything
+  //if its unsuccessful, the else block is executed
   // const data = await info.json();
-  const data = await info.json();
+  const contentType = info.headers.get('content-type');
+  let data;
+  if (contentType && contentType.includes('application/json')) {
+    data = await info.json();
+  } else {
+    data = await info.text();  // Handle plain text response if not JSON
+    console.warn("Expected JSON, received plain text:", data);
+  }
+
 
   //the if statements check if the response was successful or not
   if(info.ok){// successful it logs the success message, shows an alert and navigates to the Map screen

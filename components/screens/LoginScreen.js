@@ -1,8 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { View, Text, StyleSheet, TextInput, Button, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Card } from 'react-native-paper';
+
 
 
 const LoginScreen = () => {
@@ -26,10 +28,15 @@ const LoginScreen = () => {
       
       if (response.ok) {
         const data = await response.json();   
-        
         // Store the token or session ID
-        navigation.navigate('Map');
+        const { token } = data;
+        await AsyncStorage.setItem('token', token); // Store token
+        //when login is complete, navigate to the map page
+        navigation.navigate('Map'); 
       } else {
+        const errorData = await response.json();
+        console.log('Error response data:', errorData);
+        // current issue 
         alert('Invalid credentials');
       }
     } catch (error) {
@@ -37,10 +44,8 @@ const LoginScreen = () => {
       alert('An error occurred. Please try again.');
     }
     
-    navigation.navigate('Map'); //when login is complete, navigate to the map page
   };
   
-
 
   return (
     <View style={styles.container}>
