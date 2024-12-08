@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { View, Text, StyleSheet, TextInput, Button, Image, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,6 +49,10 @@ const LoginScreen = () => {
   
 
   return (
+    <LinearGradient
+      colors={['#030004', '#051438', '#09235C', '#10348B', '#1748C7', '#1B56F3', '#467BFB', '#80A1FE', '#94AFFF']}
+      style={styles.gradient}
+    >
     <View style={styles.container}>
       <Card style={styles.card}>
         <Text style={styles.title}>Login</Text>
@@ -70,10 +75,14 @@ const LoginScreen = () => {
         <Button title="CreateAccount" onPress={() => navigation.navigate("Create Account")}/>
       </Card>
     </View>
+    </LinearGradient>
   )
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

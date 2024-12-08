@@ -25,9 +25,9 @@ const LoginButton = () => {
 const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#5800BB',
-        height: 44,
-        width: '30%',
-        borderRadius: 10, // curve edges
+        height: 100, // Adjust the size as needed
+        width: 100, // Adjust the size as needed
+        borderRadius: 50, // Half of the height and width to make it a circle
         alignSelf: 'center',
         alignItems: 'center', // centers text in center of button height and width (works with flexdirection)
         justifyContent: 'center',
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
     },
+
     buttonSize: {
         height: 5,
         width: 100,

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { Card } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CreateAccountScreen = () => {
   
@@ -83,6 +84,10 @@ const CreateAccountScreen = () => {
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
     //   headerImage={<Ionicons size={310} name="person-outline" style={styles.headerImage} />}> 
+    <LinearGradient
+    colors={['#030004', '#051438', '#09235C', '#10348B', '#1748C7', '#1B56F3', '#467BFB', '#80A1FE', '#94AFFF']}
+    style={styles.gradient}
+    >
     <View style={styles.container}>
       <Card style={styles.card}>
         <Text style={styles.title}>Create Account</Text>
@@ -123,14 +128,15 @@ const CreateAccountScreen = () => {
         <Text>{JSON.stringify({first_name: fname, last_name: lname, email: email, password: password})}</Text>
       </Card>
     </View>
-
-
-    
+    </LinearGradient>
     // </ParallaxScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
