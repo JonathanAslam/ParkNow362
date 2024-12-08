@@ -81,9 +81,7 @@ const CreateAccountScreen = () => {
   };
 
   return (
-    // <ParallaxScrollView
-    //   headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-    //   headerImage={<Ionicons size={310} name="person-outline" style={styles.headerImage} />}> 
+
     <LinearGradient
     colors={['#030004', '#051438', '#09235C', '#10348B', '#1748C7', '#1B56F3', '#467BFB', '#80A1FE', '#94AFFF']}
     style={styles.gradient}
@@ -129,7 +127,6 @@ const CreateAccountScreen = () => {
       </Card>
     </View>
     </LinearGradient>
-    // </ParallaxScrollView>
   );
 };
 
