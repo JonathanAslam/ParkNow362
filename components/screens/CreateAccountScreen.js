@@ -42,7 +42,6 @@ const CreateAccountScreen = () => {
 
   //the response from the completed fetch request is now converted to JSON format but we should check to make sure its in JSON format before doing anything
   //if its unsuccessful, the else block is executed
-  // const data = await info.json();
   const contentType = info.headers.get('content-type');
   let data;
   if (contentType && contentType.includes('application/json')) {
@@ -56,12 +55,10 @@ const CreateAccountScreen = () => {
   //the if statements check if the response was successful or not
   if(info.ok){// successful it logs the success message, shows an alert and navigates to the Map screen
     console.log('Account created successfully:', data);
-    // Alert.alert('Success', 'Account created successfully');
     navigation.navigate('Map');
 
   }else {
     console.error('Error creating account1:', data.error);
-    // Alert.alert('Error', data.message);
   }
   
   //Network issues are caught, issures with parsing the JSON response, etc
@@ -75,7 +72,6 @@ const CreateAccountScreen = () => {
   }
   // Display user-friendly error message to the user
     console.error('Error creating account2:', err); //error happening here
-    // Alert.alert('Error', 'An error occurred while creating the account');  //Alert property does not exist
   }
   };
 

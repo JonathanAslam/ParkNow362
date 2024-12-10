@@ -50,8 +50,7 @@ app.use(express.json());
 // POST endpoint to create a new user
 app.post('/create-account', async (req, res) => {
 const { fname, lname, email, password } = req.body;
-//encrypt user password:
-//const newPassword = await bcrypt.hash(req.body.password, 15)
+
 try {
   const user = await User.create({
     fname: req.body.fname,
@@ -67,15 +66,11 @@ try {
 }
 });
 
-// //create a compare password function (implemented ABOVE)
-// userSchema.methods.comparePassword = async function (password) {
-//   return bcrypt.compare(password, this.password);
-// };
 
 // login authenticaton
 app.post('/login', async (req,res) => {
-const {email, password} = req.body;
-try {
+
+  try {
   const user = await User.findOne({email});
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -102,9 +97,7 @@ try {
 // report an issue
 
 app.post('/report-issue', async (req, res) => {
-  // const { issue, description, email } = req.body;
-  //encrypt user password:
-  //const newPassword = await bcrypt.hash(req.body.password, 15)
+
   try {
     const report = await ReportIssue.create({
       issue: req.body.issue,

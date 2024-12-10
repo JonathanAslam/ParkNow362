@@ -54,8 +54,8 @@ const MapScreen = ({navigation}) => {
 
   const newLocation = () => {
     setLocation({
-    longitude: -140.08635,
-    latitude: 60.86168,
+    longitude: (Math.random() * 360) - 180,  //random longitude from -180 (min) and 180 (max) for testing purposes
+    latitude: (Math.random() * 180) - 90, //random latitude from -90 (min) and 90 (max) for testing purposes
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
