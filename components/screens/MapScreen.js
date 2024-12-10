@@ -7,6 +7,7 @@ import Slider from '@react-native-community/slider'; //slider feature for range
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import StartSearch from '../buttons/SearchButton';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -63,11 +64,11 @@ const MapScreen = ({navigation}) => {
   return (
     <View style={styles.mapContainer}>
       {/* text to show current location (longitude, latitude, longitude delta and latitude delta) at top of screen, remove when app works fully */}
-      <Text>{text}</Text> 
       {/* map display here */}
        <MapView style={styles.map} 
         region={location}
-       />
+        />
+        <Text>{text}</Text> 
       {/* create modal functionality here */}
       {/* need modal to be transparent in order to see map in background, TYPE transparent IN THE MODAL TAG TO REMOVE BACKGROUND, BE AWARE THAT THE BACKGROUND STILL EXITS WHICH BLOCKS THE BACKGROUND AND STUFF FROM BEING INTERACTED WITH */} 
        <Modal visible={modalVisible} transparent animationType='slide'> 
@@ -116,8 +117,10 @@ const MapScreen = ({navigation}) => {
 
 
         {/* AntDesign is the creator of the vector icon we are using for the popup and dropdown buttons for the modal. we want this at the bottom of the page */}
-        <AntDesign name="upcircle" size={24} color="black" onPress={() => setModalVisible(true)} style={styles.modalUpButton}/> 
-        <Text>hello!</Text>
+        <View style={styles.buttonContainer}>
+          <Ionicons name="settings-sharp" size={24} color="black" onPress={() => navigation.navigate("Settings")} style={styles.goToSettingButton} />        
+          <AntDesign name="upcircle" size={24} color="black" onPress={() => setModalVisible(true)} /> 
+        </View>
     </View>
   )
 }
@@ -138,19 +141,26 @@ const styles = StyleSheet.create({
   },
   cardStyle: {
     position: 'relative',
-    // flex: 1,
+    flex: 1,
     top: windowHeight * 0.6,
     height: windowHeight,
   },
-  modalUpButton: {
-    position: 'relative',
-    left: windowWidth* 0.9,
-    top: '-10%', // for some reason, window's height naturally goes out of bounds by a bit
+  buttonContainer: {
+    display: 'flex',
+    flex: 1,
+    position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    left: windowWidth* 0.92,
+    top: windowHeight * 0.79, // for some reason, window's height naturally goes out of bounds by a bit
   },
   modalDownButton: {
     position: 'absolute',
     left: windowWidth* 0.9,
     top: 15, 
+  },
+  goToSettingButton: {
+    paddingBottom: 10, 
   },
   settingTitles: {
     fontSize: 20,

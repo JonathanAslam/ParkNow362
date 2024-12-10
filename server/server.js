@@ -1,5 +1,4 @@
 require('dotenv').config(); // Load environment variables
-console.log("Loaded SECRET_KEY:", process.env.SECRET_KEY);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const express = require('express');
@@ -28,12 +27,22 @@ const userSchema = new mongoose.Schema({
   password: String
 });
 
+//Define a report issue Schema
+const reportIssue = new mongoose.Schema({
+  issue: String,
+  description: String,
+  email: String
+});
+
+const ReportIssue = mongoose.model('report', reportIssue);
+
+const User = mongoose.model('user', userSchema); // Ensure correct collection name, monogoDB will pluralize it on its own
+
 //create a compare password function
 userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model('user', userSchema); // Ensure correct collection name, monogoDB will pluralize it on its own
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -84,11 +93,33 @@ try {
 
 } catch(err) {
   console.error(err);
-  console.log("Loaded SECRET_KEY:", process.env.SECRET_KEY);
   res.status(500).json({ message: "Internal server error", error: err.message });
 }
 
 });
+
+
+// report an issue
+
+app.post('/report-issue', async (req, res) => {
+  // const { issue, description, email } = req.body;
+  //encrypt user password:
+  //const newPassword = await bcrypt.hash(req.body.password, 15)
+  try {
+    const report = await ReportIssue.create({
+      issue: req.body.issue,
+      description: req.body.description,
+      email: req.body.email,
+    })
+    res.status(200).json({ message: "Reported issue to database" });
+    console.log("Response sent:", { message: "Reported issue to database" });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 
 
 app.listen(port, () => {

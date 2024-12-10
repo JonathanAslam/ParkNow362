@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { View, Text, StyleSheet, TextInput, Button, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -9,8 +8,8 @@ import { Card } from 'react-native-paper';
 
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('jonathan@gmail.com');
+  const [password, setPassword] = useState('hello123');
 
   const navigation = useNavigation();
   const handleLogin = async () => {
@@ -102,15 +101,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
   },
-  // headerImage: {
-  //   color: '#808080',
-  //   bottom: -90,
-  //   left: -35,
-  //   position: 'absolute',
-  // },
-  // titleContainer: {
-  //   flexDirection: 'row',
-  //   gap: 8,
-  // },
 });
 export default LoginScreen;

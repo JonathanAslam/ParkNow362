@@ -6,6 +6,7 @@ import HomeScreen from './components/screens/HomeScreen';
 import MapScreen from './components/screens/MapScreen';
 import LoginScreen from './components/screens/LoginScreen';
 import CreateAccountScreen from './components/screens/CreateAccountScreen';
+import SettingsScreen from './components/screens/SettingsScreen';
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="Map" component={MapScreen}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Create Account" component={CreateAccountScreen}/>
+        <Stack.Screen name="Settings" component={SettingsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

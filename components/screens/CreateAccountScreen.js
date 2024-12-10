@@ -10,10 +10,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const CreateAccountScreen = () => {
   
-  const [fname, setFname] = useState("jacob");
+  const [fname, setFname] = useState("jonathan");
   const [lname, setLname] = useState("smith");
-  const [email, setEmail] = useState("JacobS@gmail.com");
-  const [password, setPassword] = useState("hello");
+  const [email, setEmail] = useState("jonathan@gmail.com");
+  const [password, setPassword] = useState("hello123");
 
 
   const navigation = useNavigation();
@@ -25,7 +25,6 @@ const CreateAccountScreen = () => {
     console.log('Password:', password);   //add console log for user first and last name
     navigation.navigate('Map'); //route to map page when account is created
     
-  // rudy test stuff
   //our logic handling portion starts here aka try block
   try{
     //we are using the fetch API to make a POST request to the server
