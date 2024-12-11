@@ -10,9 +10,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const CreateAccountScreen = () => {
   
-  const [fname, setFname] = useState("jonathan");
+  const [fname, setFname] = useState("");
   const [lname, setLname] = useState("smith");
-  const [email, setEmail] = useState("jonathan@gmail.com");
+  const [email, setEmail] = useState("@gmail.com");
   const [password, setPassword] = useState("hello123");
 
 
@@ -24,7 +24,7 @@ const CreateAccountScreen = () => {
     console.log('Last name:', lname);
     console.log('Email:', email);
     console.log('Password:', password);   //add console log for user first and last name
-    navigation.navigate('Map'); //route to map page when account is created
+    navigation.navigate('Login'); //route to map page when account is created
     
   //our logic handling portion starts here aka try block
   try{
@@ -56,7 +56,7 @@ const CreateAccountScreen = () => {
   //the if statements check if the response was successful or not
   if(info.ok){// successful it logs the success message, shows an alert and navigates to the Map screen
     console.log('Account created successfully:', data);
-    navigation.navigate('Map');
+    navigation.navigate('Login');
 
   }else {
     console.error('Error creating account1:', data.error);
@@ -65,14 +65,7 @@ const CreateAccountScreen = () => {
   //Network issues are caught, issures with parsing the JSON response, etc
   } catch (err) {
     console.error('Error creating account:', err);
-  // Handle error more specifically based on error type
-  if (err instanceof TypeError) {
-    console.error('Network error or JSON parsing error:', err);
-  } else {
-    console.error('Generic error:', err);
-  }
-  // Display user-friendly error message to the user
-    console.error('Error creating account2:', err); //error happening here
+    alert('An error occurred. Please try again.');
   }
   };
 
