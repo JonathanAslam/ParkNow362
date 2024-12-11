@@ -49,7 +49,6 @@ app.use(express.json());
 
 // POST endpoint to create a new user
 app.post('/create-account', async (req, res) => {
-const { fname, lname, email, password } = req.body;
 
 try {
   const user = await User.create({
@@ -69,28 +68,26 @@ try {
 
 // login authenticaton
 app.post('/login', async (req,res) => {
-
+  // get email and password from request body
+  // needed when searching if user exists and matching password to user schema password
+  const { email, password } = req.body;
   try {
-  const user = await User.findOne({email});
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
+    const user = await User.findOne({email});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
     return res.status(401).json({ message: 'Incorrect password' });
+    }
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: '1 hour'
+    });
+    res.json({ token, user: {fname: user.fname, lname: user.lname, email: user.email} });
+  } catch (err) {
+    console.error('Error during login:', err);
+    res.status(500).json({ message: "Internal server error", error: err.message });
   }
-
-  // causing current error
-  const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-    expiresIn: '1 hour'
-  });
-  res.json({ token });
-
-} catch(err) {
-  console.error(err);
-  res.status(500).json({ message: "Internal server error", error: err.message });
-}
-
 });
 
 

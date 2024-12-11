@@ -29,8 +29,10 @@ const LoginScreen = () => {
       if (response.ok) {
         const data = await response.json();   
         // Store the token or session ID
-        const { token } = data;
+        const { token, user } = data;
         await AsyncStorage.setItem('token', token); // Store token
+        console.log('User:', JSON.stringify(user));
+        await AsyncStorage.setItem('user', JSON.stringify(user)); // Store email
         //when login is complete, navigate to the map page
         navigation.navigate('Map'); 
       } else {

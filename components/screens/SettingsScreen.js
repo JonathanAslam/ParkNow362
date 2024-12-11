@@ -1,17 +1,34 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, TextInput, Dimensions, ScrollView} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Card} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReportIssueButton from '../buttons/ReportIssueButton';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const SettingsScreen = () => {
-    const [email, setEmail] = useState('jonathan@gmail.com');
+    const [email, setEmail] = useState('');
     const [issue, setIssue] = useState('this is the issue');
     const [description, setDescription] = useState('this is the description');
+    // fname, lname, email all from: res.json({ token, user: {fname: user.fname, lname: user.lname, email: user.email} });
+    // in the /login api in server.js
+    const [user, setUser] = useState({fname: '', lname: '', email: ''});
 
+    useEffect(() => {
+        const getUser = async () => {
+        try {
+            const userData = await AsyncStorage.getItem('user');
+            if (userData) {
+                setUser(JSON.parse(userData));
+            }
+        } catch (err) {
+            console.error('Error fetching user data:', err);
+        }
+    };
+    getUser();
+}, []);
 
     const handleSubmitReport = async () => {
         // Implement your login logic here
@@ -19,7 +36,7 @@ const SettingsScreen = () => {
         console.log('Issue:', issue);
         console.log('Description:', description);
       //our logic handling portion starts here aka try block
-    try{
+    try {
         //we are using the fetch API to make a POST request to the server
         //the await keyword pauses the function until fetch is complete
         const report = await fetch('http://localhost:8081/report-issue', {
@@ -32,7 +49,6 @@ const SettingsScreen = () => {
     if (!report.ok) {
         throw new Error(`HTTP error! status: ${report.status}`);
     };
-    
       //the response from the completed fetch request is now converted to JSON format but we should check to make sure its in JSON format before doing anything
       //if its unsuccessful, the else block is executed
     const contentType = report.headers.get('content-type');
@@ -43,27 +59,24 @@ const SettingsScreen = () => {
         data = await report.text();  // Handle plain text response if not JSON
         console.warn("Expected JSON, received plain text:", data);
     }
-    
-    
-      //the if statements check if the response was successful or not
-    if(report.ok){// successful it logs the success message, shows an alert and navigates to the Map screen
+
+    //the if statements check if the response was successful or not
+    if(report.ok){ 
         console.log('Report submitted successfully:', data);
     }else {
         console.error('Error submitting report:', data.error);
     }
-    
-      //Network issues are caught, issures with parsing the JSON response, etc
+    //Network issues are caught, issures with parsing the JSON response, etc
     } catch (err) {
-        console.error('Error submitting report1:', err);
-      // Handle error more specifically based on error type
+        console.error('Error submitting report:', err);
+    // Handle error more specifically based on error type
     if (err instanceof TypeError) {
         console.error('Network error or JSON parsing error:', err);
     } else {
         console.error('Generic error:', err);
+    }    
     }
-        console.error('Error submitting report2:', err); //error happening here
-    }
-    };
+};
     
 return (
     <LinearGradient
@@ -72,32 +85,30 @@ return (
     >
     <View style={styles.container}>
         <Card style={styles.card}>
-        <ScrollView>
+        <ScrollView style={styles.scrollViewSizing}>
             <Text style={styles.title}>Profile</Text>
 
             <View style={styles.contentBox}>
                 <Text style={styles.content}>
-                    First Name:
+                    First Name: {user.fname}
                 </Text>
                 <Text style={styles.content}>
-                    Last Name:
+                    Last Name: {user.lname}
                 </Text>
                 <Text style={styles.content}>
-                    Email:
+                    Email: {user.email}
                 </Text>
             </View>
 
             <Text style={styles.title}>Report An Issue</Text>
             <View style={styles.contentBox}>
-                <Text style={styles.content}>
+                <Text style={styles.reportContent}>
                     Report an issue here:
                 </Text>
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
+                            value={user.email}
                             keyboardType="default"
                             autoCorrect={false}
                         />
@@ -124,8 +135,8 @@ return (
                     </View>
             </View>
             </ScrollView>
-            {/* add button to submit report here */}
             <ReportIssueButton onPress={handleSubmitReport} />
+            {/* add button to submit report here */}
         </Card>
     </View>
     </LinearGradient>
@@ -147,6 +158,9 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.85,
         width: windowWidth * 0.9,
     },
+    scrollViewSizing: {
+        height: windowHeight * 0.7,
+    },
     reportIssueCard : {
         padding: 20,
     },
@@ -164,7 +178,14 @@ const styles = StyleSheet.create({
     content: {
         display: 'flex',
         flexDirection: 'column',
-        paddingBottom: windowHeight * 0.08,
+        paddingBottom: 20,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    reportContent: {
+        display: 'flex',
+        flexDirection: 'column',
+        paddingBottom: 20,
         fontSize: 20,
     },
     input: {
