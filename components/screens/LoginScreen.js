@@ -14,6 +14,7 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const handleLogin = async () => {
     // Implement your login logic here
+    console.log('Login button pressed');
     console.log('Email:', email);
     console.log('Password:', password);
     

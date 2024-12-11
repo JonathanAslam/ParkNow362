@@ -21,7 +21,10 @@ const SettingsScreen = () => {
         try {
             const userData = await AsyncStorage.getItem('user');
             if (userData) {
-                setUser(JSON.parse(userData));
+                const parsedUserData = JSON.parse(userData);
+                setUser(parsedUserData);
+                //since we use the user.email as email, we need to set that before the report is sumbitted
+                setEmail(parsedUserData.email);
             }
         } catch (err) {
             console.error('Error fetching user data:', err);
@@ -30,7 +33,8 @@ const SettingsScreen = () => {
     getUser();
 }, []);
 
-    const handleSubmitReport = async () => {
+const handleSubmitReport = async () => {
+        console.log('Report button pressed');
         // Implement your login logic here
         console.log('Email:', email);
         console.log('Issue:', issue);

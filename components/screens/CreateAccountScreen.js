@@ -18,6 +18,7 @@ const CreateAccountScreen = () => {
 
   const navigation = useNavigation();
   const handleCreateAccount = async () => {
+    console.log('Create Account button pressed');
     // Implement your login logic here
     console.log('First name:', fname);
     console.log('Last name:', lname);
